@@ -1,5 +1,5 @@
 #! /bin/sh
-# Apk Manager 4.0 (C) 2010 by Daneshm90
+# Apk Multi-Tool Alpha (C) 2010 by Daneshm90
 # Ported to Linux by farmatito 2010
 # Changelog for linux version:
 # v 0.1 Initial version
@@ -215,7 +215,7 @@ quit () {
 
 restart () {
 	echo 
-	echo "****************************** Apk Manager *******************************"
+	echo "****************************** Apk Multi-Tool *******************************"
 	echo "------------------Simple Tasks Such As Image Editing----------------------"
 	echo "  0    Adb pull"
 	echo "  1    Extract apk"
