@@ -1,5 +1,5 @@
 #! /bin/sh
-# Apk Multi-Tools 1.0 (C) 2010 by Daneshm90
+# Apk Multi-Tools 1.0 (C) 2012 by Gerald Wayne Baggett JR {Raziel23x}
 # Ported to Linux by farmatito 2010
 # Changelog for linux version:
 # v 0.1 Initial version
