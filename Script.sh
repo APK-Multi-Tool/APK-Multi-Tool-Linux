@@ -1,12 +1,9 @@
 #! /bin/sh
-# Apk Multi-Tool Alpha (C) 2010 by Daneshm90
+# Apk Multi-Tools 1.0 (C) 2010 by Daneshm90
 # Ported to Linux by farmatito 2010
 # Changelog for linux version:
 # v 0.1 Initial version
-# v 0.2 added "other" dir to PATH
-# v 0.3 removed "function" bashism
-# v 0.4 removed more bashisms
-# v 0.5 added ogg batch optimization and quoted some vars
+
 
 ap () {
 	echo "Where do you want adb to pull the apk from? " 
@@ -215,7 +212,7 @@ quit () {
 
 restart () {
 	echo 
-	echo "****************************** Apk Multi-Tool *******************************"
+	echo "****************************** Apk Multi-Tools *******************************"
 	echo "------------------Simple Tasks Such As Image Editing----------------------"
 	echo "  0    Adb pull"
 	echo "  1    Extract apk"
