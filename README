@@ -49,10 +49,28 @@ Java 1.6
 Adb
 
 Instructions (Linux): 
+1-Download, create a folder in your sdk called "APK-Multi-Tool" and extract into it.
+2-Goto the the "sdk/APK-Multi-Tool" folder and rename "Script.sh" to "script.sh".
+3-Go into the "other" folder, right click on one file at a time, goto "permissions" in the new window and check the execute box.(do this with all the files)
+4-To add the path to your folder open up a terminal and type in -
+sudo su
+PATH=$PATH:/THE PATH TO YOUR "SCRIPT.SH"
+(for me this looks like the following)
+PATH=$PATH:/sdk/APK-Multi-Tool/other/
+5-export PATH
+6-install "sox"
+7-Type into the terminal "cd PATH TO YOUR SCRIPT.SH"
+7.5 export PATH={PATH}:/PATH TO Your SDK/sdk/platform-tools/adb
+8-Type "./script.sh"
+9-You should have a running APK-Multi-Tool.
+
+how to install sox:
+Open the software center of the linux service and searched for sox. Installed it and it there you will have SOX working.
+
 - Place apk in appropriate folder (Any filename will work, if running for first time folders will not be there, you must run and then the folders will be created) 
 - Open terminal and change-directory to apkmanager (Easiest way is to type "cd ")
 - Chmod 755 Script.sh
-- Chmod 755 all files apps inside other folder (thanks for the tip bkmo  )
+- Chmod 755 all files apps inside other folder
 - Run script by typing ./Script.sh
 - Minimize the script
 - Edit files inside the out folder
