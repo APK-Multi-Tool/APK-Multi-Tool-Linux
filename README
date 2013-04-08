@@ -35,46 +35,48 @@ Features:
 - User can change the max java heap size (only use if certain large apks get stuck when decompiling/compiling apks) (Option 16)
 - U can now set this script as ur default application for apks. When u do, if u double click any apk it will install it for u. 
 - Zipalign apks
-- Much Much More
+- Much Much More.
 
-Instructions: 
-- Place apk in appropriate folder (Any filename will work, if running for first time folders will not be there, you must run and then the folders will be created) 
-- Run script
-- Minimize the script
-- Edit files inside the project folder
-- Maximize the script
 
 Requirements: 
-Java 1.6
+Java 1.6 
 Adb
 
+
+Installing APK Multi-Tool Itself
+Instructions (Linux):
+- Create a folder in your sdk called "APK-Multi-Tool" and put the contents of the extracted APK-Multi-Tool into it or Rename the extracted APK-Multi-Tool folder to just APK-Multi-Tool and put it into the sdk folder.
+- Go to the the "sdk/APK-Multi-Tool" folder and rename "Script.sh" to "script.sh".
+- Go into the "other" folder, right click on one executable file at a time, select properties, go to "permissions" in the new window and check the "allow file to be run as a program" box (do this with all the executables/.exe's).
+- Open a terminal in the APK-Multi-Tool folder (or). Type in:
+  chmod 755 Script.sh
+- chmod 755 all files inside other folder. (thanks for the tip bkmo  )
+- Install "sox": Open the software center of the linux service and searched for sox. Once installed you will have SOX working
+- To add the path to your folder open up a terminal and type in:
+  sudo su
+  PATH=$PATH:/THE PATH TO YOUR "SCRIPT.SH"
+  (for me this looks like the following)
+  PATH=$PATH:/home/username/sdk/APK-Multi-Tool
+- Export PATH:Type into the terminal: 
+  cd "PATH TO YOUR SCRIPT.SH"
+  export PATH={PATH}:/PATH TO Your SDK/sdk/platform-tools/adb
+  (mine was: export PATH={PATH}:/home/username/sdk/platform-tools).
+  ("username" is the user name that appears on your computer).
+- Now open a terminal in the APK-Multi-Tool folder and type in:
+  ./script.sh
+- You should now have a running APK-Multi-Tool.
+
+
 Instructions (Linux): 
-1-Download, create a folder in your sdk called "APK-Multi-Tool" and extract into it.
-2-Goto the the "sdk/APK-Multi-Tool" folder and rename "Script.sh" to "script.sh".
-3-Go into the "other" folder, right click on one file at a time, goto "permissions" in the new window and check the execute box.(do this with all the files)
-4-To add the path to your folder open up a terminal and type in -
-sudo su
-PATH=$PATH:/THE PATH TO YOUR "SCRIPT.SH"
-(for me this looks like the following)
-PATH=$PATH:/sdk/APK-Multi-Tool/other/
-5-export PATH
-6-install "sox"
-7-Type into the terminal "cd PATH TO YOUR SCRIPT.SH"
-7.5 export PATH={PATH}:/PATH TO Your SDK/sdk/platform-tools/adb
-8-Type "./script.sh"
-9-You should have a running APK-Multi-Tool.
-
-how to install sox:
-Open the software center of the linux service and searched for sox. Installed it and it there you will have SOX working.
-
 - Place apk in appropriate folder (Any filename will work, if running for first time folders will not be there, you must run and then the folders will be created) 
-- Open terminal and change-directory to apkmanager (Easiest way is to type "cd ")
-- Chmod 755 Script.sh
-- Chmod 755 all files apps inside other folder
-- Run script by typing ./Script.sh
+- Open terminal in the APK-Multi-Tool folder (or)
+- Run script by typing:
+ ./script.sh
 - Minimize the script
 - Edit files inside the out folder
 - Maximize the script
+
+- Note: .jar files need to be renamed to .apk, then put in modding folder
 
 Got problems ?
 
@@ -85,4 +87,3 @@ Got problems ?
 5. It's not a themed apk (if it is, expect .9 png errors, use as close to stock as possible)
 6. Look at the log to know whats happening
 7. If all else fails, post as much info as possible and we will try to assist you.
-
