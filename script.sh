@@ -1,9 +1,9 @@
-#! /bin/sh
+#! /bin/bash
 # Apk Multi-Tools 1.0 (C) 2012 by Gerald Wayne Baggett JR {Raziel23x}
 # Ported to Linux by farmatito 2010
 # Changelog for linux version:
 # v 0.1 Initial version
-
+current=`pwd`
 
 ap () {
 	echo "Where do you want adb to pull the apk from? " 
@@ -28,7 +28,7 @@ ex () {
 	clear
 	# Must be -o"../out" and not -o "../out"
 	7za x -o"../out" ../place-apk-here-for-modding/*.apk
-	cd ..
+	cd $current
 }
 
 opt () {
@@ -39,13 +39,13 @@ opt () {
 			optipng -o99 "$PNG_FILE"
 		fi
 	done
-	cd ..
+	cd $current
 }
 
 sys () {
 	cd other
 	7za a -tzip "../place-apk-here-for-modding/repackaged-unsigned.apk" ../out/* -mx9
-	cd ..
+	cd $current
 }
 
 oa () {
@@ -79,7 +79,7 @@ si () {
 	else
 		echo "Warning: cannot find file '$INFILE'"
 	fi
-	cd ..
+	cd $current
 }
 
 zipa () {
@@ -132,21 +132,26 @@ apu () {
 }
 
 de () {
+	if [ "$workfile" ]
+	then
 	cd other
 	rm -f "../place-apk-here-for-modding/repackaged.apk"
 	rm -f "../place-apk-here-for-modding/repackaged-signed.apk"
 	rm -f "../place-apk-here-for-modding/repackaged-unsigned.apk"
-	rm -rf "../out"
-	rm -rf "out.out"
+	rm -rf "../working/$workfile"
 	clear
-	java -jar apktool.jar d ../place-apk-here-for-modding/*.apk "../out"
-	cd ..
+	java -jar apktool.jar d "../place-apk-here-for-modding/$workfile" "../working/$workfile"
+	else work	
+	fi
+	cd $current
 }
 
 co () {
 	cd other
-	java -jar apktool.jar b "../out" "../place-apk-here-for-modding/repackaged-unsigned.apk"
-	cd ..
+        mv "../place-apk-here-for-modding/$workfile" "../backup_files/$workfile"
+	java -jar apktool.jar b "../working/$workfile" "../place-apk-here-for-modding/$workfile"
+	cd $current
+	echo " YOUR ORG FILE HAVE BEEN MOVED TO BACKUP_FILES"
 }
 
 all () {
@@ -179,7 +184,7 @@ bopt () {
 		rm -rf ../place-apk-here-to-batch-optimize/original/*
 	done
 	rm -rf "../place-apk-here-to-batch-optimize/original"
-	cd ..
+	cd $current
 }
 
 asi () {
@@ -187,9 +192,23 @@ asi () {
 	rm -f "../place-apk-here-for-signing/signed.apk"
 	java -jar signapk.jar -w testkey.x509.pem testkey.pk8 ../place-apk-here-for-signing/*.apk "../place-apk-here-for-signing/signed.apk"
 	#clear
-	cd ..
+	cd $current
 }
 
+dejar () {
+	cd other
+	jar_file=`ls ../place-jar-here-for-modding`
+	java -jar baksmali.jar -o "../working/$jar_file" ../place-jar-here-for-modding/$jar_file
+	cd $current
+}
+
+cojar () {
+         cd other
+         jar_file=`ls ../place-jar-here-for-modding`
+         mv ../place-jar-here-for-modding/$jar_file "../place-jar-here-for-modding/org-$jar_file"
+         java -Xmx512M -jar smali.jar "../working/$jar_file/" -o ../place-jar-here-for-modding/classes.dex
+	 
+}
 ogg () {
 	cd other
 	find "../place-ogg-here/" -name *.ogg | while read OGG_FILE ;
@@ -197,7 +216,7 @@ ogg () {
 		FILE=`basename "$OGG_FILE"`
 		DIR=`dirname "$OGG_FILE"`
 		printf "%s" "Optimizing: $FILE"
-		sox "$OGG_FILE" -C 0 "$DIR/optimized-$FILE"
+		sox "$OGG_FILE" -C 0 "$DIR/done/$FILE"
 		if [ "x$?" = "x0" ] ; then
 			printf "\n"
 		else
@@ -206,15 +225,38 @@ ogg () {
 	done
 }
 
+work () {
+		PS3="Number:"
+		array=`ls -1 "place-apk-here-for-modding"`
+		select name in $array
+		do
+			break
+		done
+		workfile=$name
+}
+
+restore () {
+		PS3="Number:"
+		array=`ls -1 "backup_files"`
+		select restore in $array
+		do
+			break
+		done
+		rm "place-apk-here-for-modding/$restore"
+		mv "backup_files/$restore" "place-apk-here-for-modding/$restore"
+}
+
 quit () {
 	exit 0
 }
 
 restart () {
 	echo 
-	echo "****************************** Apk Multi-Tools *******************************"
-	echo "------------------Simple Tasks Such As Image Editing----------------------"
-	echo "  0    Adb pull"
+	echo "****************************** Apk Multi-Tools **********************************************"
+	echo "------------------Simple Tasks Such As Image Editing-----------------------------------------"
+	echo "                       Current File:$workfile"
+	echo ""
+	echo "  0    Adb pull"                                                      
 	echo "  1    Extract apk"
 	echo "  2    Optimize images inside (Only if \"Extract Apk\" was selected)"
 	echo "  3    Zip apk"
@@ -223,41 +265,47 @@ restart () {
 	echo "  6    Install apk (Dont do this if system apk, do adb push)"
 	echo "  7    Zip / Sign / Install apk (All in one step)"
 	echo "  8    Adb push (Only for system apk)"
-	echo "-----------------Advanced Tasks Such As Code Editing-----------------------"
-	echo "  9    Decompile apk"
-	echo "  10   Compile apk"
+	echo "-----------------Advanced Tasks Such As Code Editing-----------------------------------------"
+	echo "  9    Decompile apk""                              ""14   Decompile Jar / classes.dex"
+	echo "  10   Compile apk""                                ""15   Compile Jar / classes.dex"
 	echo "  11   Sign apk"
 	echo "  12   Install apk"
-	echo "  13   Compile apk / Sign apk / Install apk (All in one step)"
-	echo "---------------------------------------------------------------------------"
-	echo "  14   Batch Optimize Apk (inside place-apk-here-to-batch-optimize only)"
-	echo "  15   Sign an apk        (inside place-apk-here-for-signing folder only)"
-	echo "  16   Batch optimize ogg files (inside place-ogg-here only)"
-	echo "  17   Quit"
-	echo "****************************************************************************"
+	echo "  13   Compile / Sign / Install (All in one step)"         
+	echo "---------------------------------------------------------------------------------------------"
+	echo "  16   Batch Optimize Apk (inside place-apk-here-to-batch-optimize only)"
+	echo "  17   Sign an apk        (inside place-apk-here-for-signing folder only)"
+	echo "  18   Batch optimize ogg files (inside place-ogg-here only)"
+	echo "  19   Quit"
+        echo "  20   Change working file"
+        echo "  21   Restore File"
+	echo "*********************************************************************************************"
 	echo 
 	printf "%s" "Please make your decision: "
 	read ANSWER
 
 	case "$ANSWER" in
-		 0)   ap ;;
-		 1)   ex ;;
-		 2)  opt ;;
-		 3)  zip ;;
-		 4)   si ;;
-		 5) zipa ;;
-		 6)  ins ;;
-		 7) alli ;;
-		 8)  apu ;;
-		 9)   de ;;
-		10)   co ;;
-		11)   si ;;
-		12)  ins ;;
-		13)  all ;;
-		14) bopt ;;
-		15)  asi ;;
-		16)  ogg ;;
-		17) quit ;;
+		 0)    ap ;;
+		 1)    ex ;;
+		 2)   opt ;;
+		 3)   zip ;;
+		 4)    si ;;
+		 5)  zipa ;;
+		 6)   ins ;;
+		 7)  alli ;;
+		 8)   apu ;;
+		 9)    de ;;
+		10)    co ;;
+		11)    si ;;
+		12)   ins ;;
+		13)   all ;;
+                14) dejar ;;
+                15) cojar ;;
+		16)  bopt ;;
+		17)   asi ;;
+		18)   ogg ;;
+		19)  quit ;;
+                20)  work ;;
+		21)  restore ;;
 		 *)
 			echo "Unknown command: '$ANSWER'"
 		;;
@@ -287,17 +335,21 @@ clear
 printf "%s" "Do you want to clean out all your current projects (y/N)? "
 read INPUT
 if [ "x$INPUT" = "xy" ] || [ "x$INPUT" = "xY" ] ; then
-	rm -rf place-apk-here-for-modding
-	rm -rf place-apk-here-for-signing
-	rm -rf place-apk-here-to-batch-optimize
-	rm -rf out
-	rm -rf $HOME/apktool
-	mkdir place-apk-here-for-modding
-	mkdir place-apk-here-for-signing
-	mkdir place-apk-here-to-batch-optimize
+	rm -rf "place-apk-here-for-modding"
+	rm -rf "place-apk-here-for-signing"
+	rm -rf "place-apk-here-to-batch-optimize"
+	rm -rf "place-ogg-here"
+        rm -rf "place-jar-here-for-modding"
+	rm -rf "working"
+	mkdir "place-apk-here-for-modding"
+	mkdir "place-apk-here-for-signing"
+	mkdir "place-apk-here-to-batch-optimize"
+        mkdir "place-ogg-here"
+        mkdir "place-jar-here-for-modding"
+        mkdir "working"
 fi
 while [ "1" = "1" ] ;
 do
-	restart
+restart
 done
 exit 0
