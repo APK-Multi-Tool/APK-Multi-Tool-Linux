@@ -140,7 +140,7 @@ de () {
 	rm -f "../place-apk-here-for-modding/repackaged-unsigned.apk"
 	rm -rf "../working/$workfile"
 	clear
-	java -jar apktool.jar d "../place-apk-here-for-modding/$workfile" "../working/$workfile"
+	java -jar apktool.jar d "../place-apk-here-for-modding/$workfile" -o "../working/$workfile"
 	else work	
 	fi
 	cd $current
@@ -149,7 +149,7 @@ de () {
 co () {
 	cd other
         mv "../place-apk-here-for-modding/$workfile" "../backup_files/$workfile"
-	java -jar apktool.jar b "../working/$workfile" "../place-apk-here-for-modding/$workfile"
+	java -jar apktool.jar b "../working/$workfile" -o "../place-apk-here-for-modding/$workfile"
 	cd $current
 	echo " YOUR ORG FILE HAVE BEEN MOVED TO BACKUP_FILES"
 }
