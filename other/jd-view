@@ -1,0 +1,6 @@
+#! /bin/bash
+pth=$(pwd)
+cd "$pth/other/"
+nohup "./jd-gui" "$pth/projects/$1.jar" &
+clear
+sleep 0.05

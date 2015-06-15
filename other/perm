@@ -1,0 +1,37 @@
+#! /bin/bash
+echo "Fixing Permissions..."
+
+chmod 775 ./other/apktool.jar
+chmod 775 ./other/signapk.jar
+chmod 775 ./other/7za
+chmod 775 ./other/aaparser
+chmod 775 ./other/aapt
+chmod 775 ./other/apktool
+chmod 775 ./other/jd-gui
+chmod 775 ./other/jd-view
+chmod 775 ./other/optipng
+chmod 775 ./other/testkey.pk8
+chmod 775 ./other/testkey.x509.pem
+chmod 664 ./other/template.zip
+
+chmod 775 ./other/dex2jar/lib
+chmod 775 ./other/dex2jar/dex2jar
+
+chmod 775 ./other/dex2jar/lib/asm-all-3.3.1.jar
+chmod 775 ./other/dex2jar/lib/commons-cli-1.2.jar
+chmod 775 ./other/dex2jar/lib/commons-lite-1.10.jar
+chmod 775 ./other/dex2jar/lib/dex-ir-1.7.jar
+chmod 775 ./other/dex2jar/lib/dex-reader-1.10.jar
+chmod 775 ./other/dex2jar/lib/dex-tools-0.0.0.5.jar
+chmod 775 ./other/dex2jar/lib/dex-translator-0.0.9.9.jar
+chmod 775 ./other/dex2jar/lib/dx.jar
+chmod 775 ./other/dex2jar/lib/jasmin-p2.5.jar
+chmod 775 ./other/dex2jar/lib/p-rename-1.1.jar
+chmod 664 ./other/dex2jar/lib/asm-LICENSE.txt
+chmod 664 ./other/dex2jar/lib/commons-io-LICENSE.txt
+chmod 664 ./other/dex2jar/lib/commons-io-NOTICE.txt
+chmod 664 ./other/dex2jar/lib/dx-NOTICE
+chmod 664 ./other/dex2jar/lib/license-jasmin.txt
+
+echo "New File Permissions:"
+ls -lR ./*

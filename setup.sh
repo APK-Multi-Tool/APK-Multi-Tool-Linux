@@ -61,7 +61,7 @@ mkdir "place-apk-here-for-signing"
 mkdir "place-apk-here-to-batch-optimize"
 mkdir "place-jar-here-for-modding"
 mkdir "place-ogg-here"
-mkdir "working"
+mkdir "projects"
 echo "Done Creating Folders"
 menu
 }

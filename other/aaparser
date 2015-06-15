@@ -1,0 +1,118 @@
+#! /bin/bash
+# 
+# APK Parser for extracting launchable-activity & package name from APKs
+# version 1.0
+# 
+
+if [[ -n $1 ]]; then
+	checkParameter=$1
+	ERROR=0
+	if [[ "${checkParameter:0:1}" == "-" ]]; then
+		optn=$1
+		if [[ -n $2 ]]; then
+			APK_FILE=$2
+		else
+			ERROR=1
+		fi
+	else
+		APK_FILE=$1
+		if [[ -n $2 ]]; then
+			optn=$2
+		fi
+	fi
+	if [[ -f $APK_FILE ]]; then
+		appPackage=$(aapt d badging "$APK_FILE" | grep "package: name=" | cut -d "'" -f2)
+		if [[ $appPackage != "" ]]; then
+			appActivity=$(aapt d badging "$APK_FILE" | grep "launchable-activity: name=" | cut -d "'" -f2)
+			if [[ -z $appActivity ]]; then
+				appActivity="<Not Found>"
+			fi
+		else
+			ERROR=3
+		fi
+	else
+		if [[ $1 == "--help" ]]; then
+			ERROR=4
+		else
+			ERROR=2
+		fi
+	fi
+	# Parameter Parsing
+	limit=${#optn}
+	cnt=0
+	while [[ cnt -lt $limit ]]; do
+		case "${optn:$cnt:1}" in
+			*i* ) packInfo=1 ;;
+			*p* ) additionalInfo=1 ;;
+			*l* ) packNameLower=1 ;;
+			*m* ) singleLine=1 ;;
+		esac
+		cnt=$((cnt+1))
+	done
+else
+	ERROR=1
+fi
+
+if [[ $ERROR == 1 || $ERROR == 4 ]]; then
+	echo "APK Parser v1.0"
+	if [[ $ERROR == 1 ]]; then
+		echo "Wrong usage."
+	fi
+	echo 
+	echo "Usage:"
+	echo " aaparser [-p|l|c] FILE"
+	echo "   Extract package name & launchable-activity from FILE."
+	echo 
+	echo "   FILE must be an APK."
+	echo 
+	echo "    -p      Print an additional Content Info (PackageName/LaunchableActivity)"
+	echo "    -l      Show Package Name in lowercase and in underscore domain separation"
+	echo "    -m      Single line output (PackageName/LaunchableActivity)"
+	echo "            (Overrides other parameters)"
+	echo "    -i      Show package information"
+	echo "            (com.example.app format)"
+	echo
+	echo "   --help   Show this text."
+	echo 
+fi
+
+if [[ $ERROR == 2 ]]; then
+	echo "ERROR: $1 is not a valid APK."
+	echo 
+fi
+
+if [[ $ERROR == 3 ]]; then
+	echo 
+fi
+
+if [[ $ERROR == 0 ]]; then
+	if [[ $singleLine == 1 ]]; then
+		for activitey in $appActivity
+		do
+			echo "${appPackage}/${activitey}"
+		done
+	else
+		echo "Package Name:"
+		echo "$appPackage"
+		if [[ "$packNameLower" == "1" ]]; then
+			fileName="${appPackage//"."/_}"
+			echo "${fileName,,}"
+		fi
+		if [[ "$packInfo" != "1" ]]; then
+			echo 
+			echo "Launchable Activities:"
+			echo "$appActivity"
+			echo 
+			if [[ "$additionalInfo" == "1" ]]; then
+				echo "Content Info:"
+				for activitey in $appActivity
+				do
+					echo "${appPackage}/${activitey}"
+				done
+				echo
+			fi
+		fi
+	fi # END $singleLine == 1
+fi # END $ERROR == 0
+
+exit
