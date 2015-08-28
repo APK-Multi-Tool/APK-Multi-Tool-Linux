@@ -8,9 +8,9 @@ current=`pwd`
 # 0) Pull APK
 ap () {
 	if [[ $(adb devices | grep "device" -c) -gt "1" ]] ; then
-		echo "Enter APK remote file location:" 
+		echo "Enter APK remote file location:"
 		echo "i.e. /system/app/launcher.apk"
-		echo 
+		echo
 		printf "Input: "
 		read INPUT
 		APK_FILE=`basename $INPUT`
@@ -29,7 +29,7 @@ ap () {
 
 # 1) Extract APK
 ex () {
-	echo 
+	echo
 	if [[ -n $fileName ]] ; then
 		cd other
 		rm -f "../place-apk-here-for-modding/$fileName-signed.apk"
@@ -49,7 +49,7 @@ ex () {
 
 # 2) Optimize APK PNGs
 opt () {
-	echo 
+	echo
 	if [[ -n $fileName || -f ../projects/$fileName.apk/res ]] ; then
 		cd other
 		find "../projects/$fileName.apk/res" -name *.png | while read PNG_FILE ;
@@ -59,7 +59,7 @@ opt () {
 			fi
 		done
 		clear
-		echo 
+		echo
 		echo "PNGs optimized."
 		cd ..
 	else
@@ -99,7 +99,7 @@ zip () {
 
 # 4) Sign APK
 si () {
-	echo 
+	echo
 	if [[ -n $fileName ]] ; then
 		cd other
 		INFILE="../place-apk-here-for-modding/$fileName-unsigned.apk"
@@ -122,7 +122,7 @@ si () {
 
 # 5) Zipalign
 zipa () {
-	echo 
+	echo
 	if [[ -n $fileName ]] ; then
 		for STRING in "unsigned" "signed"
 		do
@@ -144,7 +144,7 @@ zipa () {
 # 6) Install APK
 ins () {
 	clear
-	echo 
+	echo
 	if [[ $(adb devices | grep "device" -c) -gt "1" ]] ; then
 		echo "Install APK: $fileName.apk (y/N)?"
 		read INPUT
@@ -200,10 +200,10 @@ de () {
 		rm -f "../place-apk-here-for-modding/$fileName-signed.apk"
 		rm -f "../place-apk-here-for-modding/$fileName-unsigned.apk"
 		rm -rf "../projects/$fileName.apk"
-		java -jar apktool.jar d ../place-apk-here-for-modding/$fileName.apk "../projects/$fileName.apk"
+		java -jar apktool.jar d ../place-apk-here-for-modding/$fileName.apk -o "../projects/$fileName.apk"
 		cd ..
 	else
-		echo 
+		echo
 		actvfile ; retval=$? ; if [[ $retval == 0 ]]; then de ; fi
 	fi
 }
@@ -214,12 +214,12 @@ co () {
 	if [[ -n $fileName ]] ; then
 		cd other
 		baseAPK=`basename $fileName`
-		java -jar apktool.jar b "../projects/$fileName.apk" "../place-apk-here-for-modding/$fileName-unsigned.apk"
+		java -jar apktool.jar b "../projects/$fileName.apk" -o "../place-apk-here-for-modding/$fileName-unsigned.apk"
 		cd ..
 	else
 		actvfile ; retval=$? ; if [[ $retval == 0 ]]; then co ; fi
 	fi
-	retainorigfiles	
+	retainorigfiles
 }
 
 cochk () {
@@ -236,7 +236,7 @@ cochk () {
 }
 
 retainorigfiles () {
-	echo 
+	echo
 	if [[ $comptype == 1 ]]; then
 		echo "Aside from APK signatures, copy unmodified files "
 	else
@@ -251,7 +251,7 @@ retainorigfiles () {
 		if [[ $comptype == 2 ]] ; then
 			rm -rf ../keep/META-INF
 		fi
-		echo 
+		echo
 		echo "Delete all modified files in the /keep directory."
 		echo "If you modified an XML file, delete the resources.arsc file."
 		echo "Press Enter key to continue."
@@ -261,7 +261,7 @@ retainorigfiles () {
 		cd ..
 	fi
 	clear
-	echo 
+	echo
 	echo "Done"
 }
 
@@ -302,7 +302,7 @@ bopt () {
 
 # 13)
 asi () {
-	echo 
+	echo
 	cd other
 	find "../place-apk-here-for-signing" -name *.apk | while read PLACE-APK-HERE-FOR-SIGNING ;
 	do
@@ -333,13 +333,13 @@ ogg () {
 # 15)
 selt () {
 	cd place-apk-here-for-modding
-	echo 
+	echo
 	echo "Listing APK files:"
 	echo "------------------"
 	PS3=$(echo ""; echo "Choose APK: ")
-	fileList=$(find -type f -name "*.apk")
+	fileList=$(find . -type f -name "*.apk")
 	# Clean up list.
-	fileList=${fileList//"./"/}
+	fileList=${fileList/\.\//}
 
 	if [[ -z $fileList ]] ; then
 		clear
@@ -382,14 +382,14 @@ actvfile () {
 
 # 16)
 frm () {
-	echo 
+	echo
 	rm -rf $HOME/apktool
 	cd other
 	printf "Pull framework-res.apk from an ADB device (Y/n)? "
 	read INPUT
 	if [[ x$INPUT == "xY" || x$INPUT == "xy" || x$INPUT == "x" ]] ;  then
 		if [[ $(adb devices | grep "device" -c) -gt "1" ]] ; then
-			echo 
+			echo
 			echo "Pulling framework-res.apk from device."
 			adb pull /system/framework/framework-res.apk ./framework-res.apk
 		else
@@ -403,7 +403,7 @@ frm () {
 		if [[ $localMode == "true" ]]; then
 			echo "Local framework-res.apk found."
 		fi
-		echo 
+		echo
 		echo $(java -jar apktool.jar "if" ./framework-res.apk) | grep "Framework installed"
 		clear
 		echo
@@ -427,7 +427,7 @@ clr () {
 		mkdir place-apk-here-for-signing
 		mkdir place-apk-here-to-batch-optimize
 		echo "Projects cleared."
-		echo 
+		echo
 		printf "Clear place-apk-here-for-modding directory (y/N)? "
 		read INPUT
 		if [[ "x$INPUT" = "xy" || "x$INPUT" = "xY" ]] ; then
@@ -436,7 +436,7 @@ clr () {
 			mkdir place-apk-here-for-modding
 			fileName=""
 		fi
-		echo 
+		echo
 		printf "Delete framework-res.apk import (y/N)? "
 		read INPUT
 		if [[ "x$INPUT" = "xy" || "x$INPUT" = "xY" ]] ; then
@@ -453,7 +453,7 @@ setclv () {
 	echo "Current compression level: $clvl"
 	printf "Enter new compression level (Value 0-9): "
 	read INPUT
-	echo 
+	echo
 	case "$INPUT" in
 		0|1|2|3|4|5|6|7|8|9 )
 			clvl=$INPUT
@@ -472,7 +472,7 @@ quit () {
 }
 
 apren () {
-	echo 
+	echo
 	mkdir -p "apk-rename"
 	if [[ ! -z $1 ]]; then
 		apkclean $1
@@ -509,10 +509,10 @@ devback () {
 		echo
 		echo "Pulling all APKs from device /data/app/..."
 		echo "(WARNING: This operation can take a long time depending"
-		echo "          on the number of installed APKs)" ; echo 
+		echo "          on the number of installed APKs)" ; echo
 
 		adb pull "/data/app/" "./apk-backup/"
-		echo 
+		echo
 		apkclean "../apk-backup/"
 	else
 		echo ; echo "Error. No device connected."
@@ -526,9 +526,9 @@ devres () {
 		echo
 		echo "Installing all APKs in ./apk-backup/ to device..."
 		echo "(WARNING: This operation can take a long time depending"
-		echo "          on the number of APKs)" ; echo 
+		echo "          on the number of APKs)" ; echo
 
-		echo 
+		echo
 		echo -n "Use Whitelist.txt as filter? (Y/n): "
 		read USE_LIST
 
@@ -537,7 +537,7 @@ devres () {
 				;;
 		esac
 
-		echo 
+		echo
 
 		totalapp=$(ls ./apk-backup/ | grep ".apk" -c)
 		progress=1
@@ -551,7 +551,7 @@ devres () {
 				echo "$CURRENTAPK is not allowed. Check Whitelist.txt."
 			fi
 			progress=$((progress+1))
-			echo 
+			echo
 		done
 	else
 		echo ; echo "Error. No device connected."
@@ -574,7 +574,7 @@ mkzip () {
 			mkdir -p "zip-temp"
 			hidden=$(7za x -o"./zip-temp" "./other/template.zip")
 		fi
-		echo 
+		echo
 		echo "Modify contents of the zip-temp directory to match update.zip contents."
 		echo "Edit /zip-temp/META-INF/com/google/android/updater-script to your requirements."
 		echo ; printf "Enter custom update.zip name (Default: update.zip): "
@@ -605,7 +605,7 @@ mkzip () {
 pushzip () {
 	if [[ $(adb devices | grep "device" -c) -gt "1" ]] ; then
 		cd "./projects"
-		echo 
+		echo
 		echo "Listing ZIP files:"
 		echo "------------------"
 		PS3=$(echo ""; echo "Choose ZIP: ")
@@ -635,7 +635,7 @@ pushzip () {
 }
 
 cls2jar () {
-	echo 
+	echo
 	# Check if an active APK is set.
 	if [[ -n $fileName ]] ; then
 
@@ -659,7 +659,7 @@ cls2jar () {
 }
 
 viewjar () {
-	echo 
+	echo
 	# Check if an active APK is set.
 	if [[ -n $fileName ]] ; then
 		if [[ -f "./projects/$fileName.jar" ]]; then
@@ -681,7 +681,7 @@ crtdirs () {
 	mkdir -p place-apk-here-for-signing
 	mkdir -p place-apk-here-to-batch-optimize
 	mkdir -p place-ogg-here
-	echo 
+	echo
 	echo "Done."
 }
 
@@ -700,37 +700,37 @@ fixperm () {
 }
 
 restart () {
-	echo 
+	echo
 	echo "############################### Apk Multi-Tools ################################"
-	echo 
+	echo
 	echo "- Simple Tasks (Image editing, etc.) ------------------------------------------"
 	echo "  1    Extract APK                       2    Optimize APK Images              "
 	echo "  3    Zip APK                                                                 "
 	echo "  7    One-step Zip-Sign-Install"
-	echo 
+	echo
 	echo "- Advanced Tasks (XML, Smali, etc.) -------------------------------------------"
 	echo "  9    Decompile APK                     10   Compile APK                      "
 	echo "  11   One-step Compile-Sign-Install"
-	echo 
+	echo
 	echo "- Common Tasks ----------------------------------------------------------------"
 	echo "  0    ADB Pull                          8    ADB Push                         "
 	echo "  4    Sign APK                          6    Install APK                      "
 	echo "  5    Zipalign APK                                                            "
-	echo 
+	echo
 	echo "- Batch Operations ------------------------------------------------------------"
 	echo "  12   Batch Optimize APK                13   Batch Sign APK                   "
 	echo "  14   Batch Optimize OGG files"
-	echo 
+	echo
 	echo "- Distribution & Update.zip Creation ------------------------------------------"
 	echo "  41   Create Update.zip                 42   Push Update.zip to device        "
-	echo 
+	echo
 	echo "- Decompile Classes.dex & View Decompiled Code --------------------------------"
 	echo "  51   Decompile Classes.dex             52   View Decompiled Code             "
-	echo 
+	echo
 	echo "- ADB Device & APK Management -------------------------------------------------"
 	echo "  30   Backup Device Installed APKs      31   Batch Rename APK                 "
 	echo "  32   Batch Install APK (apk-backup)"
-	echo 
+	echo
 	echo "-------------------------------------------------------------------------------"
 	echo "  20   Set Active APK"
 	echo "  21   Import framework-res.apk  (Perform apktool.jar if framework-res.apk)"
@@ -749,7 +749,7 @@ restart () {
 	fi
 	printf "\n"
 	echo "-------------------------------------------------------------------------------"
-	echo 
+	echo
 	printf "%s" "Enter selection: "
 	read ANSWER
 	reset
@@ -820,7 +820,7 @@ echo -n "Checking required binaries & files... "
 ERROR="0"
 for PROGRAM in "optipng" "7za" "java" "sudo" "adb" "aapt" "sox"
 do
-	which "$PROGRAM" > /dev/null 
+	which "$PROGRAM" > /dev/null
 	if [ "x$?" = "x1" ] ; then
 		ERROR="1"
 		echo ; echo ; echo "The program $PROGRAM is missing or is not in your PATH."
