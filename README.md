@@ -1,4 +1,6 @@
-I am currently working on a major update to the apk manager application as well and changing the name to APK Multi-Tool with some new added features and also to fix some issues with some code errors.
+# Apk Multi Tool
+
+**I am currently working on a major update to the apk manager application as well and changing the name to APK Multi-Tool with some new added features and also to fix some issues with some code errors.**
 
 I am also changing a lot of the features as well since a lot of the code has been outdated for a while.
 I have updated all the files and modified Apk manager's Scripts to fix many user reported bugs from Daneshm90 apk manager which he had written a simple script to ease the process of editing apks. Got a lot of downloads so thought its in demand 
@@ -6,13 +8,15 @@ Whether you're doing basic image editing or editing the smali or xml files, on a
 This script should make the process a LOT smoother.
 Theres an option of compiling/signing/installing all in one step 
 
-Thanks: 
-Goes to Daneshm90 the Original Writer of APK Manager
-Goes to Brut.all for his awesome tool.
-Goes to JF for ofcourse, smali/baksmali
+**Thanks:**
 
+* Goes to Daneshm90 the Original Writer of APK Manager
+* Goes to Brut.all for his awesome tool.
+* Goes to JF for ofcourse, smali/baksmali
 
-Features: 
+---
+
+### Features: 
 - Added framework dependent decompiling (For non propietary rom apks). (Option 10). Checks whether the dependee apk u selected is correct.
 - Allows multiple projects to be modified, switch to and from.
 - Allows to modify system apk's using apktool but ensures maximum compatibility in terms of signature / manifest.xml
@@ -37,14 +41,17 @@ Features:
 - Zipalign apks
 - Much Much More.
 
+---
 
-Requirements: 
-Java 1.7 
-Adb
+### Installing APK Multi-Tool
 
+**Requirements:**
 
-Installing APK Multi-Tool Itself
-Instructions (Linux):
+- Java 1.7 
+- Adb
+
+**Instructions (Linux):**
+
 - Create a folder in your sdk called "APK-Multi-Tool" and put the contents of the extracted APK-Multi-Tool into it or Rename the extracted APK-Multi-Tool folder to just APK-Multi-Tool and put it into the sdk folder.
 - Go to the the "sdk/APK-Multi-Tool" folder and rename "Script.sh" to "script.sh".
 - Go into the "other" folder, right click on one executable file at a time, select properties, go to "permissions" in the new window and check the "allow file to be run as a program" box (do this with all the executables/.exe's).
@@ -66,8 +73,11 @@ Instructions (Linux):
   ./script.sh
 - You should now have a running APK-Multi-Tool.
 
+---
+### Usage
 
-Instructions (Linux): 
+**Instructions (Linux):**
+
 - Place apk in appropriate folder (Any filename will work, if running for first time folders will not be there, you must run and then the folders will be created) 
 - Open terminal in the APK-Multi-Tool folder (or type in terminal: cd "PATH TO THE script.sh")
 - Run script by typing:
@@ -78,7 +88,7 @@ Instructions (Linux):
 
 - Note: .jar files need to be renamed to .apk, then put in modding folder
 
-Got problems ?
+**Got problems ?**
 
 1. Make sure your path has no spaces
 2. Your filename has no wierd characters
